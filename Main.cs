@@ -193,7 +193,7 @@ class Reservation
             {
 
                 Console.Write("> ");
-                choix_jour = short.Parse(Console.ReadLine()); 
+                choix_jour = short.Parse(Console.ReadLine().Trim());
                 if(choix_jour < 1 || choix_jour > 30)
                 {
                     Console.WriteLine();

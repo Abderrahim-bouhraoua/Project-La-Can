@@ -349,6 +349,7 @@ class Reservation
 
                 short cat_num = 0; 
                 bool corr_cate = false;
+                Console.WriteLine();
                 Console.WriteLine("Choisissez la Categorie du passager  (" + (i+1) + ") ENTRE 1 ET 5:");
                 Console.WriteLine();
                 Console.WriteLine(" 1- adu26p  (Adulte 26 ans et plus )");

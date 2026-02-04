@@ -1,0 +1,24 @@
+[
+  {
+    "reservation": {
+      "nom": "d",
+      "idLiaison": 3,
+      "date": "2025-11-03",
+      "heure": "11:15",
+      "horodatage": "2026-01-26 16:59:15"
+    },
+    "passagers": [
+      {
+        "nom": "ef",
+        "prenom": "ef",
+        "codeCategorie": "enf417"
+      }
+    ],
+    "vehicules": [
+      {
+        "codeCategorie": "camp",
+        "quantite": 1
+      }
+    ]
+  }
+]

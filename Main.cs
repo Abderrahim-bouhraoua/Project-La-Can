@@ -2,6 +2,7 @@ using System;
 using System.Text; 
 using System.IO; 
 using System.Collections.Generic;
+
 class Reservation
 {
     //List of the 4 possible journeys 
@@ -17,7 +18,6 @@ class Reservation
 
     static List<string> Vehicule_Categories = new List<string> 
     { 
-
         "trot", "velo", "velelec" ,"cartand",
         "mobil", "moto", 
         "cat1", "cat2", "cat3", "cat4",
@@ -81,8 +81,6 @@ class Reservation
         { "camp", 332.70 }
     };
 
-
-
     struct Traversee
     {
         public short liaison;
@@ -97,14 +95,12 @@ class Reservation
         public string Prenom; 
         public string Code; 
 
-
         public Passagers(string nom , string prenom , string code)
         {
             Nom = nom; 
             Prenom = prenom; 
             Code = code; 
         }
-        
     } 
 
     //structure des vehicules
@@ -120,11 +116,12 @@ class Reservation
         } 
     } 
 
+    // ==========================================
+    // DEBUT DES FONCTIONS
+    // ==========================================
 
-
-
-
-    static void Main()
+    // FONCTION POUR AFFICHER LE HEADER
+    static void AfficherHeader()
     {
         //HEADER 
         Console.WriteLine("====================================");
@@ -132,16 +129,21 @@ class Reservation
         Console.WriteLine("         Novembre 2025              ");
         Console.WriteLine("====================================");
         Console.WriteLine();
+    }
 
-
+    // FONCTION POUR LE NOM DE RESERVATION
+    static string SaisirNomReservation()
+    {
         //NOM DE RESERVATION
         Console.WriteLine("Nom de la reservation :");
         Console.Write("> ");
-        string nom_reser = Console.ReadLine(); 
+        return Console.ReadLine(); 
+    }
 
-
+    // FONCTION POUR CHOISIR LA LIAISON
+    static short SaisirLiaison()
+    {
         //CHOIX DE LA LIAISON
-        
         bool corr_liaison = false; 
         Console.WriteLine();
         Console.WriteLine("Choisissez une liaison (1 a 4):");
@@ -150,12 +152,11 @@ class Reservation
         Console.WriteLine("3 - Quiberon -> Le Palais");
         Console.WriteLine("4 - Le Palais -> Quiberon");
         short choix_ligne = 0; 
-    
+        
         while(!corr_liaison)
         {
             try 
             {
-
                 Console.Write("> ");
                 choix_ligne = short.Parse(Console.ReadLine()); 
 
@@ -178,20 +179,23 @@ class Reservation
                 Console.WriteLine("ERREUR: Veuillez entrer un nombre valide!");
                 Console.WriteLine();
             }
-
         }
+        return choix_ligne;
+    }
 
+    // FONCTION POUR CHOISIR LE JOUR
+    static short SaisirJour()
+    {
         //CHOIX DU JOUR EXACT
         bool corr_jour = false;
         short choix_jour = 0; 
-            Console.WriteLine();
-            Console.WriteLine("Choisissez un jour de depart (01 a 30) :");
+        Console.WriteLine();
+        Console.WriteLine("Choisissez un jour de depart (01 a 30) :");
 
         while (!corr_jour)    //BOUCLE POUR LE CORRECT INPUT
         {
             try 
             {
-
                 Console.Write("> ");
                 choix_jour = short.Parse(Console.ReadLine().Trim());
                 if(choix_jour < 1 || choix_jour > 30)
@@ -214,8 +218,12 @@ class Reservation
                 Console.WriteLine();
             }
         }
+        return choix_jour;
+    }
 
-
+    // FONCTION POUR LIRE LES HORAIRES
+    static Dictionary<short, Dictionary<short , List<string>>> ChargerHoraires()
+    {
         //LECTURE DU FICHIER CSV DES HORAIRES
         //DIC POUR STOCKER LES HORAIRES
         Dictionary<short, Dictionary<short , List<string>>> D_horaires = new Dictionary<short, Dictionary<short , List<string>>>();
@@ -241,14 +249,18 @@ class Reservation
 
             D_horaires[jour][liaisonId].AddRange(heures);
         }
+        return D_horaires;
+    }
 
+    // FONCTION POUR CHOISIR L'HORAIRE
+    static string SaisirHoraire(Dictionary<short, Dictionary<short , List<string>>> D_horaires, short choix_jour, short choix_ligne)
+    {
         Console.WriteLine();
         Console.WriteLine("Les horaires disponible dans le " + choix_jour + " Novembre pour la liaison (" + lesLiaisons[choix_ligne-1] + ").");
         Console.WriteLine();
         short iteration = 1; 
         foreach(string h in D_horaires[choix_jour][choix_ligne])
         {
-
             Console.WriteLine(iteration + "- " + h);
             iteration++; 
         }
@@ -262,7 +274,6 @@ class Reservation
         {
             try 
             {
-                
                 Console.Write("> ");
                 heure = short.Parse(Console.ReadLine());
                 if (heure <= 0)
@@ -292,17 +303,24 @@ class Reservation
         string choix_heure = D_horaires[choix_jour][choix_ligne][heure-1];
         Console.WriteLine();
         Console.WriteLine("c'est bon vous avez choisis : " + choix_heure);
+        
+        return choix_heure;
+    }
 
+    // FONCTION POUR REMPLIR LA STRUCTURE (juste pour garder la logique du code d'origine)
+    static void CreerTraversee(short choix_ligne, short choix_jour, string choix_heure)
+    {
         //REMPLIR LA STRUCTURE TRAVERSEE 
         Traversee t;
         t.liaison = choix_ligne;
         t.date = "2025-11-" + choix_jour.ToString("00");
         t.depart = choix_heure;
+    }
 
-
-
+    // FONCTION POUR SAISIR LES PASSAGERS
+    static List<Passagers> SaisirPassagers()
+    {
         //INSERER LES PASSAGERS
-        
         Console.WriteLine();
         Console.WriteLine("=== SAISIE DES PASSAGERS ===");
         Console.WriteLine("Combien de passagers ?");
@@ -330,70 +348,71 @@ class Reservation
             {
                 Console.WriteLine("ERREUR: Veuillez entrer un nombre valide!");
             }
-
         }
+
         List<Passagers> L_passagers = new List<Passagers>(); 
 
         //BOUCLE SUR LE NOMBRE DU PASSAGERS 
-            for (int i = 0 ; i < nbr_passagers ; i++)
+        for (int i = 0 ; i < nbr_passagers ; i++)
+        {
+            Console.WriteLine();
+            Console.WriteLine("Nom du passager (" + (i+1) + "):");
+            Console.Write("> ");
+            string nom_passagers = Console.ReadLine(); 
+
+            Console.WriteLine("Prenom du passager (" + (i+1) + ") :");
+            Console.Write("> ");
+            string prenom_passagers = Console.ReadLine(); 
+
+            short cat_num = 0; 
+            bool corr_cate = false;
+            Console.WriteLine("Choisissez la Categorie du passager  (" + (i+1) + ") ENTRE 1 ET 5:");
+            Console.WriteLine();
+            Console.WriteLine(" 1- adu26p  (Adulte 26 ans et plus )");
+            Console.WriteLine(" 2- jeu1825 (Jeune 18 à 25 ans inclus)");
+            Console.WriteLine(" 3- enf417  (Enfant 4 à 17 ans inclus)");
+            Console.WriteLine(" 4- bebe    (Bébé moins de 4 ans )");
+            Console.WriteLine(" 5- ancomp  (Animal de compagnie)");
+
+            while(!corr_cate)
             {
-
-                Console.WriteLine();
-                Console.WriteLine("Nom du passager (" + (i+1) + "):");
-                Console.Write("> ");
-                string nom_passagers = Console.ReadLine(); 
-
-                Console.WriteLine("Prenom du passager (" + (i+1) + ") :");
-                Console.Write("> ");
-                string prenom_passagers = Console.ReadLine(); 
-
-                short cat_num = 0; 
-                bool corr_cate = false;
-                Console.WriteLine();
-                Console.WriteLine("Choisissez la Categorie du passager  (" + (i+1) + ") ENTRE 1 ET 5:");
-                Console.WriteLine();
-                Console.WriteLine(" 1- adu26p  (Adulte 26 ans et plus )");
-                Console.WriteLine(" 2- jeu1825 (Jeune 18 à 25 ans inclus)");
-                Console.WriteLine(" 3- enf417  (Enfant 4 à 17 ans inclus)");
-                Console.WriteLine(" 4- bebe    (Bébé moins de 4 ans )");
-                Console.WriteLine(" 5- ancomp  (Animal de compagnie)");
-
-                while(!corr_cate)
+                try 
                 {
-                    try 
+                    Console.WriteLine();
+                    Console.Write("> ");
+                    cat_num = short.Parse(Console.ReadLine());
+                    if(cat_num < 1 || cat_num > 5)
                     {
                         Console.WriteLine();
-                        Console.Write("> ");
-                        cat_num = short.Parse(Console.ReadLine());
-                        if(cat_num < 1 || cat_num > 5)
-                        {
-                            Console.WriteLine();
-                            Console.Write("ERREUR !!!! CHOISIR UN NOMBRE DE (1 à 5) MERCI.");
-                            Console.WriteLine();
-
-                        }
-                        else
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine("C'est bon vous avez choisis la categorie " + Pass_Categories[cat_num-1]);
-                            corr_cate = true;
-                        }
+                        Console.Write("ERREUR !!!! CHOISIR UN NOMBRE DE (1 à 5) MERCI.");
+                        Console.WriteLine();
                     }
-                    catch
+                    else
                     {
                         Console.WriteLine();
-                        Console.WriteLine("ERREUR: Veuillez entrer un nombre valide!");
-                        Console.WriteLine();
+                        Console.WriteLine("C'est bon vous avez choisis la categorie " + Pass_Categories[cat_num-1]);
+                        corr_cate = true;
                     }
                 }
-
-                string pass_categorie = Pass_Categories[cat_num -1]; //Liste static avec le code de chaque categorie  
-                Passagers p = new Passagers(nom_passagers , prenom_passagers , pass_categorie);
-
-                L_passagers.Add(p); 
-
-
+                catch
+                {
+                    Console.WriteLine();
+                    Console.WriteLine("ERREUR: Veuillez entrer un nombre valide!");
+                    Console.WriteLine();
+                }
             }
+
+            string pass_categorie = Pass_Categories[cat_num -1]; //Liste static avec le code de chaque categorie  
+            Passagers p = new Passagers(nom_passagers , prenom_passagers , pass_categorie);
+
+            L_passagers.Add(p); 
+        }
+        return L_passagers;
+    }
+
+    // FONCTION POUR SAISIR LES VEHICULES
+    static List<Vehicules> SaisirVehicules()
+    {
         //INSERTION DES VEHICULES 
         Console.WriteLine();
         Console.WriteLine("=== SAISIE DES VEHICULES ===");
@@ -406,14 +425,13 @@ class Reservation
         
         if(ve_confirmation == "oui" || ve_confirmation == "OUI" || ve_confirmation == "o" || ve_confirmation == "O" || ve_confirmation == "oui " || ve_confirmation == "o " )
         {
-            Console.WriteLine("combien de vehicules svp : ");
+            Console.WriteLine("Combien de types de véhicules différents souhaitez-vous ajouter ?");
 
             while(!corr_ve_nbr)
             {
                 Console.Write("> ");
                 try 
                 {
-
                     nbr_vehicules = short.Parse(Console.ReadLine()); 
                     if (nbr_vehicules <= 0)
                     {
@@ -462,7 +480,6 @@ class Reservation
                     {
                         case '1':
                         case '&':
-
                             Console.WriteLine();
                             Console.WriteLine("Categorie vélo / trottinette :");
                             Console.WriteLine("1- Trottinette électrique");
@@ -481,7 +498,7 @@ class Reservation
                                         Console.WriteLine("Categorie sélectionnée : " + Vehicule_Categories[0]);
                                         Console.WriteLine();
                                         corr_ve_cat1 = true; 
-                                        break;           
+                                        break;            
                                     case '2':
                                     case 'é':
                                         ve_categorie = Vehicule_Categories[1]; 
@@ -511,9 +528,8 @@ class Reservation
                                         break;
                                 }
                             }
-
-                        corr_ve_cat = true; 
-                        break;
+                            corr_ve_cat = true; 
+                            break;
 
                         case '2':
                         case 'é':
@@ -533,7 +549,7 @@ class Reservation
                                         Console.WriteLine("Categorie sélectionnée : " + Vehicule_Categories[4]);
                                         Console.WriteLine();
                                         corr_ve_cat2 = true; 
-                                        break;           
+                                        break;            
                                     case '2':
                                     case 'é':
                                         ve_categorie = Vehicule_Categories[5];
@@ -547,9 +563,8 @@ class Reservation
                                         break;
                                 }                            
                             }
-
-                        corr_ve_cat = true; 
-                        break;
+                            corr_ve_cat = true; 
+                            break;
 
                         case '3':
                         case '"':
@@ -571,7 +586,7 @@ class Reservation
                                         Console.WriteLine("Categorie sélectionnée : " + Vehicule_Categories[6]);
                                         Console.WriteLine();
                                         corr_ve_cat3 = true; 
-                                        break;           
+                                        break;            
                                     case '2':
                                     case 'é':
                                         ve_categorie = Vehicule_Categories[7]; 
@@ -601,9 +616,8 @@ class Reservation
                                         break;
                                 }
                             }
-
-                        corr_ve_cat = true; 
-                        break;
+                            corr_ve_cat = true; 
+                            break;
 
                         case '4':
                         case '\'':
@@ -650,156 +664,196 @@ class Reservation
                     }
                 }
 
-                    Vehicules vehicule = new Vehicules(ve_categorie , ve_quantity);
-                    L_Vehicules.Add(vehicule);
-                }
+                Vehicules vehicule = new Vehicules(ve_categorie , ve_quantity);
+                L_Vehicules.Add(vehicule);
             }
-
-            Console.WriteLine();
-            Console.WriteLine("====================================");
-            Console.WriteLine("        RECAPITULATIF                ");
-            Console.WriteLine("====================================");
-            Console.WriteLine("Nom de reservation choisis : " + nom_reser);
-            Console.WriteLine();
-            Console.WriteLine("Liaison choisis : " +  lesLiaisons[choix_ligne - 1]) ;
-            Console.WriteLine();
-            Console.WriteLine("Jour choisis : "  + choix_jour);
-            Console.WriteLine();
-            Console.WriteLine("Nombre des passagers : " + nbr_passagers);
-            Console.WriteLine();
-
-            for(int a = 0 ; a < L_passagers.Count ; a++)
-            {
-                
-                Console.WriteLine("Passager N°" + (a+1) + " : ");
-                Console.WriteLine(L_passagers[a].Nom);
-                Console.WriteLine(L_passagers[a].Prenom);
-                Console.WriteLine(L_passagers[a].Code); 
-                Console.WriteLine("----------------------------"); 
-            }
-            
-            Console.WriteLine();
-            Console.WriteLine("Nombre des vehicules : " + nbr_vehicules);
-            Console.WriteLine();
-            
-            for(int k = 0 ; k < L_Vehicules.Count ; k++)
-            {
-                
-                Console.WriteLine("Vehicule N°" + (k+1) + " : ");
-                Console.WriteLine(L_Vehicules[k].Code);
-                Console.WriteLine(L_Vehicules[k].Quantite);
-                Console.WriteLine("----------------------------"); 
-                
-            }
-
-            // ===== CHOIX DESTINATION =====
-            bool si_Groix = false;
-
-            if(choix_ligne == 1 || choix_ligne == 2)
-            {
-                si_Groix = true;
-            }
-
-            // ===== SELECTION DES TARIFS =====
-            Dictionary<string, double> Tarifs_Passagers;
-            Dictionary<string, double> Tarifs_Vehicules;
-
-            if(si_Groix)
-            {
-                Tarifs_Passagers = Tarifs_Passagers_Groix;
-                Tarifs_Vehicules = Tarifs_Vehicules_Groix;
-            }
-            else
-            {
-                Tarifs_Passagers = Tarifs_Passagers_BelleIle;
-                Tarifs_Vehicules = Tarifs_Vehicules_BelleIle;
-            }
-
-            // ===== CALCUL PRIX PASSAGERS =====
-            double prix_passagers = 0;
-
-            for(int i = 0 ; i < L_passagers.Count ; i++)
-            {
-                prix_passagers += Tarifs_Passagers[L_passagers[i].Code];
-            }
-
-            // ===== CALCUL PRIX VEHICULES =====
-            double prix_vehicules = 0;
-
-            for(int i = 0 ; i < L_Vehicules.Count ; i++)
-            {
-                prix_vehicules += Tarifs_Vehicules[L_Vehicules[i].Code] * L_Vehicules[i].Quantite;
-            }
-
-            // ===== TOTAL =====
-            double prix_total = prix_passagers + prix_vehicules;
-
-            Console.WriteLine();
-            Console.WriteLine("=== PRIX A PAYER ===");
-            Console.WriteLine("Passagers : " + prix_passagers + " €");
-            Console.WriteLine("Vehicules : " + prix_vehicules + " €");
-            Console.WriteLine("TOTAL : " + prix_total + " €");
-
-            // ===== CREATION DU FICHIER JSON =====
-
-            StringBuilder json = new StringBuilder();
-
-            // tableau de reservations
-            json.Append("[\n");
-            json.Append("  {\n");
-
-            // reservation
-            json.Append("    \"reservation\": {\n");
-            json.Append("      \"nom\": \"" + nom_reser + "\",\n");
-            json.Append("      \"idLiaison\": " + choix_ligne + ",\n");
-            json.Append("      \"date\": \"2025-11-" + choix_jour.ToString("00") + "\",\n");
-            json.Append("      \"heure\": \"" + choix_heure + "\",\n");
-            json.Append("      \"horodatage\": \"" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\"\n");
-            json.Append("    },\n");
-
-            // passagers
-            json.Append("    \"passagers\": [\n");
-            for(int i = 0 ; i < L_passagers.Count ; i++)
-            {
-                json.Append("      {\n");
-                json.Append("        \"nom\": \"" + L_passagers[i].Nom + "\",\n");
-                json.Append("        \"prenom\": \"" + L_passagers[i].Prenom + "\",\n");
-                json.Append("        \"codeCategorie\": \"" + L_passagers[i].Code + "\"\n");
-                json.Append("      }");
-
-                if(i < L_passagers.Count - 1)
-                    json.Append(",\n");
-                else
-                    json.Append("\n");
-            }
-            json.Append("    ],\n");
-
-            // vehicules
-            json.Append("    \"vehicules\": [\n");
-            for(int i = 0 ; i < L_Vehicules.Count ; i++)
-            {
-                json.Append("      {\n");
-                json.Append("        \"codeCategorie\": \"" + L_Vehicules[i].Code + "\",\n");
-                json.Append("        \"quantite\": " + L_Vehicules[i].Quantite + "\n");
-                json.Append("      }");
-
-                if(i < L_Vehicules.Count - 1)
-                    json.Append(",\n");
-                else
-                    json.Append("\n");
-            }
-            json.Append("    ]\n");
-
-            // fermeture
-            json.Append("  }\n");
-            json.Append("]\n");
-
-            // ecriture fichier
-            File.WriteAllText("reservation.json", json.ToString());
-
-            Console.WriteLine();
-            Console.WriteLine("Fichier reservation.json cree avec succes");
-
-
         }
+        return L_Vehicules;
+    }
+
+    // FONCTION POUR AFFICHER LE RECAPITULATIF
+    static void AfficherRecapitulatif(string nom_reser, short choix_ligne, short choix_jour, List<Passagers> L_passagers, List<Vehicules> L_Vehicules)
+    {
+        Console.WriteLine();
+        Console.WriteLine("====================================");
+        Console.WriteLine("        RECAPITULATIF                ");
+        Console.WriteLine("====================================");
+        Console.WriteLine("Nom de reservation choisis : " + nom_reser);
+        Console.WriteLine();
+        Console.WriteLine("Liaison choisis : " +  lesLiaisons[choix_ligne - 1]) ;
+        Console.WriteLine();
+        Console.WriteLine("Jour choisis : "  + choix_jour);
+        Console.WriteLine();
+        Console.WriteLine("Nombre des passagers : " + L_passagers.Count);
+        Console.WriteLine();
+
+        for(int a = 0 ; a < L_passagers.Count ; a++)
+        {
+            Console.WriteLine("Passager N°" + (a+1) + " : ");
+            Console.WriteLine(L_passagers[a].Nom);
+            Console.WriteLine(L_passagers[a].Prenom);
+            Console.WriteLine(L_passagers[a].Code); 
+            Console.WriteLine("----------------------------"); 
+        }
+        
+        Console.WriteLine();
+        Console.WriteLine("Nombre des vehicules : " + L_Vehicules.Count);
+        Console.WriteLine();
+        
+        for(int k = 0 ; k < L_Vehicules.Count ; k++)
+        {
+            Console.WriteLine("Vehicule N°" + (k+1) + " : ");
+            Console.WriteLine(L_Vehicules[k].Code);
+            Console.WriteLine(L_Vehicules[k].Quantite);
+            Console.WriteLine("----------------------------"); 
+        }
+    }
+
+    // FONCTION POUR CALCULER ET AFFICHER LE PRIX
+    static void CalculerEtAfficherPrix(short choix_ligne, List<Passagers> L_passagers, List<Vehicules> L_Vehicules)
+    {
+        // ===== CHOIX DESTINATION =====
+        bool si_Groix = false;
+
+        if(choix_ligne == 1 || choix_ligne == 2)
+        {
+            si_Groix = true;
+        }
+
+        // ===== SELECTION DES TARIFS =====
+        Dictionary<string, double> Tarifs_Passagers;
+        Dictionary<string, double> Tarifs_Vehicules;
+
+        if(si_Groix)
+        {
+            Tarifs_Passagers = Tarifs_Passagers_Groix;
+            Tarifs_Vehicules = Tarifs_Vehicules_Groix;
+        }
+        else
+        {
+            Tarifs_Passagers = Tarifs_Passagers_BelleIle;
+            Tarifs_Vehicules = Tarifs_Vehicules_BelleIle;
+        }
+
+        // ===== CALCUL PRIX PASSAGERS =====
+        double prix_passagers = 0;
+
+        for(int i = 0 ; i < L_passagers.Count ; i++)
+        {
+            prix_passagers += Tarifs_Passagers[L_passagers[i].Code];
+        }
+
+        // ===== CALCUL PRIX VEHICULES =====
+        double prix_vehicules = 0;
+
+        for(int i = 0 ; i < L_Vehicules.Count ; i++)
+        {
+            prix_vehicules += Tarifs_Vehicules[L_Vehicules[i].Code] * L_Vehicules[i].Quantite;
+        }
+
+        // ===== TOTAL =====
+        double prix_total = prix_passagers + prix_vehicules;
+
+        Console.WriteLine();
+        Console.WriteLine("=== PRIX A PAYER ===");
+        Console.WriteLine("Passagers : " + prix_passagers + " €");
+        Console.WriteLine("Vehicules : " + prix_vehicules + " €");
+        Console.WriteLine("TOTAL : " + prix_total + " €");
+    }
+
+    // FONCTION POUR GENERER LE JSON
+    static void GenererJSON(string nom_reser, short choix_ligne, short choix_jour, string choix_heure, List<Passagers> L_passagers, List<Vehicules> L_Vehicules)
+    {
+        // ===== CREATION DU FICHIER JSON =====
+
+        StringBuilder json = new StringBuilder();
+
+        // tableau de reservations
+        json.Append("[\n");
+        json.Append("  {\n");
+
+        // reservation
+        json.Append("    \"reservation\": {\n");
+        json.Append("      \"nom\": \"" + nom_reser + "\",\n");
+        json.Append("      \"idLiaison\": " + choix_ligne + ",\n");
+        json.Append("      \"date\": \"2025-11-" + choix_jour.ToString("00") + "\",\n");
+        json.Append("      \"heure\": \"" + choix_heure + "\",\n");
+        json.Append("      \"horodatage\": \"" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "\"\n");
+        json.Append("    },\n");
+
+        // passagers
+        json.Append("    \"passagers\": [\n");
+        for(int i = 0 ; i < L_passagers.Count ; i++)
+        {
+            json.Append("      {\n");
+            json.Append("        \"nom\": \"" + L_passagers[i].Nom + "\",\n");
+            json.Append("        \"prenom\": \"" + L_passagers[i].Prenom + "\",\n");
+            json.Append("        \"codeCategorie\": \"" + L_passagers[i].Code + "\"\n");
+            json.Append("      }");
+
+            if(i < L_passagers.Count - 1)
+                json.Append(",\n");
+            else
+                json.Append("\n");
+        }
+        json.Append("    ],\n");
+
+        // vehicules
+        json.Append("    \"vehicules\": [\n");
+        for(int i = 0 ; i < L_Vehicules.Count ; i++)
+        {
+            json.Append("      {\n");
+            json.Append("        \"codeCategorie\": \"" + L_Vehicules[i].Code + "\",\n");
+            json.Append("        \"quantite\": " + L_Vehicules[i].Quantite + "\n");
+            json.Append("      }");
+
+            if(i < L_Vehicules.Count - 1)
+                json.Append(",\n");
+            else
+                json.Append("\n");
+        }
+        json.Append("    ]\n");
+
+        // fermeture
+        json.Append("  }\n");
+        json.Append("]\n");
+
+        // ecriture fichier
+        File.WriteAllText("reservation.json", json.ToString());
+
+        Console.WriteLine();
+        Console.WriteLine("Fichier reservation.json cree avec succes");
+    }
+
+    // ==========================================
+    // MAIN PRINCIPAL
+    // ==========================================
+    static void Main()
+    {
+        AfficherHeader();
+        
+        string nom_reser = SaisirNomReservation();
+
+        short choix_ligne = SaisirLiaison();
+
+        short choix_jour = SaisirJour();
+
+        // CHARGEMENT ET CHOIX HORAIRES
+        Dictionary<short, Dictionary<short , List<string>>> D_horaires = ChargerHoraires();
+        string choix_heure = SaisirHoraire(D_horaires, choix_jour, choix_ligne);
+
+        // REMPLISSAGE STRUCT (Pour garder la logique)
+        CreerTraversee(choix_ligne, choix_jour, choix_heure);
+
+        // SAISIES
+        List<Passagers> L_passagers = SaisirPassagers();
+        List<Vehicules> L_Vehicules = SaisirVehicules();
+
+        // RECAP ET PRIX
+        AfficherRecapitulatif(nom_reser, choix_ligne, choix_jour, L_passagers, L_Vehicules);
+        CalculerEtAfficherPrix(choix_ligne, L_passagers, L_Vehicules);
+
+        // EXPORT
+        GenererJSON(nom_reser, choix_ligne, choix_jour, choix_heure, L_passagers, L_Vehicules);
+    }
 }

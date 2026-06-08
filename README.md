@@ -97,35 +97,6 @@ Project-La-Can/
 ```
 
 ---
-
-## 📸 Screenshots
-
-### Main Menu
-
-<p align="center">
-  <img src="docs/images/main-menu.png" alt="Main Menu" width="750">
-</p>
-
-### Choosing a Route
-
-<p align="center">
-  <img src="docs/images/choose-route.png" alt="Choose Route" width="750">
-</p>
-
-### Adding Passengers
-
-<p align="center">
-  <img src="docs/images/passengers.png" alt="Passengers" width="750">
-</p>
-
-### Final Summary
-
-<p align="center">
-  <img src="docs/images/summary.png" alt="Summary" width="750">
-</p>
-
----
-
 ## 📦 Installation
 
 ### 1. Clone the repository
@@ -170,37 +141,6 @@ Then run:
 ```bash
 Main.exe
 ```
-
----
-
-## 🧭 Installation Guide with Screenshots
-
-> This section can be completed later with screenshots.
-
-### Step 1 — Download or clone the project
-
-<p align="center">
-  <img src="docs/install/step-1.png" alt="Step 1" width="750">
-</p>
-
-### Step 2 — Open the project folder
-
-<p align="center">
-  <img src="docs/install/step-2.png" alt="Step 2" width="750">
-</p>
-
-### Step 3 — Check that `horaires.csv` exists
-
-<p align="center">
-  <img src="docs/install/step-3.png" alt="Step 3" width="750">
-</p>
-
-### Step 4 — Run the application
-
-<p align="center">
-  <img src="docs/install/step-4.png" alt="Step 4" width="750">
-</p>
-
 ---
 
 ## 🧠 How It Works

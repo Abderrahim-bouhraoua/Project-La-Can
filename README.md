@@ -2,10 +2,6 @@
 
 > Console application in **C#** for managing ferry reservations between **Lorient, Groix, Quiberon and Belle-Île**.
 
-<p align="center">
-  <img src="docs/images/demo.png" alt="Project La Can Demo" width="850">
-</p>
-
 ---
 
 ## 🚀 About the Project

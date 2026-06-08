@@ -1,103 +1,286 @@
-# Project-La-Can
-First-year BUT Informatique project (IUT Robert Schuman). C# console application for ferry booking: managing crossings, passengers, vehicles, and generating a JSON reservation file.
+# ⛴️ Project La Can
 
+> Console application in **C#** for managing ferry reservations between **Lorient, Groix, Quiberon and Belle-Île**.
 
-1--------
+<p align="center">
+  <img src="docs/images/demo.png" alt="Project La Can Demo" width="850">
+</p>
 
-First we have 2 main routes :
+---
 
-Lorient ↔ Groix
+## 🚀 About the Project
 
-Quiberon ↔ Belle-Île
+**Project La Can** is a C# console application that simulates a ferry reservation system.
 
-From that we get 4 possible journeys :
+The user can choose a ferry route, select a travel date and departure time, add passengers, add vehicles, calculate the total price, and generate a reservation file in JSON format.
 
-Lorient → Groix
+This project was created as a first-year **BUT Informatique** school project.
 
-Groix → Lorient
+---
 
-Quiberon → Belle-Île
+## ✨ Main Features
 
-Belle-Île → Quiberon
+* 🛳️ Choose between 4 ferry routes
+* 📅 Select a day in November 2025
+* 🕒 Load available departure times from a CSV file
+* 👤 Add passengers with different categories
+* 🚗 Add vehicles with different categories and prices
+* 💰 Calculate the final reservation price
+* 📋 Display a complete reservation summary
+* 🧾 Generate a `reservation.json` file
+* ✅ Input validation to avoid invalid choices
 
-2--------
+---
 
-These 4 journeys are run by LA CAN, so each one has an id :
+## 🌍 Available Routes
 
-id1 → Lorient → Groix
+The application manages 4 possible journeys:
 
-id2 → Groix → Lorient
+| ID | Route                |
+| -- | -------------------- |
+| 1  | Lorient → Groix      |
+| 2  | Groix → Lorient      |
+| 3  | Quiberon → Belle-Île |
+| 4  | Belle-Île → Quiberon |
 
-id3 → Quiberon → Belle-Île
+---
 
-id4 → Belle-Île → Quiberon
+## 🧑‍🤝‍🧑 Passenger Categories
 
-These ids are what the program uses internally.
+| Code      | Category               |
+| --------- | ---------------------- |
+| `adu26p`  | Adult                  |
+| `jeu1825` | Young passenger        |
+| `enf417`  | Child                  |
+| `bebe`    | Baby                   |
+| `ancomp`  | Pet / animal companion |
 
-3--------
+---
 
-So the program logic is something like :
+## 🚗 Vehicle Categories
 
-ask the user for a reservation name
+The program also supports vehicle reservations, including:
 
-choose one of the 4 journeys
+* Scooter / trottinette
+* Bike
+* Electric bike
+* Motorcycle
+* Cars by size category
+* Camper van
 
-ask the user for a day of the month
+Each category has its own code and price depending on the destination.
 
-choose a departure hour
+---
 
-hours depend on the journey
+## 🛠️ Technologies Used
 
-they come from a CSV file
+| Technology       | Usage                     |
+| ---------------- | ------------------------- |
+| **C#**           | Main programming language |
+| **Console App**  | User interface            |
+| **CSV**          | Departure times storage   |
+| **JSON**         | Reservation export        |
+| **Git / GitHub** | Version control           |
 
-we only manage November
+---
 
-4--------
+## 📂 Project Structure
 
-After the journey is chosen, we create a Traversee structure that contains :
+```text
+Project-La-Can/
+│
+├── Main.cs              # Main source code
+├── horaires.csv         # Ferry departure times
+├── reservation.json     # Generated reservation file
+├── LICENSE              # MIT License
+└── README.md            # Project documentation
+```
 
-liaison → id of the journey (1 to 4)
+---
 
-date → day chosen by the user (formatted as a string)
+## 📸 Screenshots
 
-depart → hour chosen by the user
+### Main Menu
 
-This is mainly to group all journey info together (and later for JSON).
+<p align="center">
+  <img src="docs/images/main-menu.png" alt="Main Menu" width="750">
+</p>
 
-5--------
+### Choosing a Route
 
-Then we ask the user for passengers and vehicles.
+<p align="center">
+  <img src="docs/images/choose-route.png" alt="Choose Route" width="750">
+</p>
 
-Passengers :
+### Adding Passengers
 
-last name
+<p align="center">
+  <img src="docs/images/passengers.png" alt="Passengers" width="750">
+</p>
 
-first name
+### Final Summary
 
-category of the passenger (adult, young, child, baby, animal)
+<p align="center">
+  <img src="docs/images/summary.png" alt="Summary" width="750">
+</p>
 
-each category has a code and a price
+---
 
-Vehicles :
+## 📦 Installation
 
-choose a vehicle category (trotinette, bike, car, etc.)
+### 1. Clone the repository
 
-enter the quantity
+```bash
+git clone https://github.com/USERNAME/Project-La-Can.git
+```
 
-each vehicle also has a code and a price
+Then open the folder:
 
-6--------
+```bash
+cd Project-La-Can
+```
 
-At the end :
+---
 
-show a summary of everything the user entered
+### 2. Make sure the CSV file is present
 
-journey, date, hour
+The file `horaires.csv` must stay in the same folder as `Main.cs` or in the execution directory.
 
-list of passengers
+It contains the available departure times used by the program.
 
-list of vehicles
+---
 
-calculate the total price
+### 3. Compile the project
 
-display the final amount
+With the .NET SDK:
+
+```bash
+dotnet new console
+dotnet run
+```
+
+Or compile directly with a C# compiler:
+
+```bash
+csc Main.cs
+```
+
+Then run:
+
+```bash
+Main.exe
+```
+
+---
+
+## 🧭 Installation Guide with Screenshots
+
+> This section can be completed later with screenshots.
+
+### Step 1 — Download or clone the project
+
+<p align="center">
+  <img src="docs/install/step-1.png" alt="Step 1" width="750">
+</p>
+
+### Step 2 — Open the project folder
+
+<p align="center">
+  <img src="docs/install/step-2.png" alt="Step 2" width="750">
+</p>
+
+### Step 3 — Check that `horaires.csv` exists
+
+<p align="center">
+  <img src="docs/install/step-3.png" alt="Step 3" width="750">
+</p>
+
+### Step 4 — Run the application
+
+<p align="center">
+  <img src="docs/install/step-4.png" alt="Step 4" width="750">
+</p>
+
+---
+
+## 🧠 How It Works
+
+The program starts by asking the user for a reservation name.
+
+Then the user chooses:
+
+1. A ferry route
+2. A travel day
+3. A departure time
+4. Passengers
+5. Vehicles
+
+After that, the program displays a full summary and calculates the total price.
+
+Finally, the reservation is saved into a JSON file.
+
+---
+
+## 📄 JSON Output Example
+
+```json
+{
+  "reservation": {
+    "nom": "ReservationTest",
+    "idLiaison": 3,
+    "date": "2025-11-03",
+    "heure": "11:15"
+  },
+  "passagers": [
+    {
+      "nom": "Dupont",
+      "prenom": "Jean",
+      "codeCategorie": "adu26p"
+    }
+  ],
+  "vehicules": [
+    {
+      "codeCategorie": "velo",
+      "quantite": 1
+    }
+  ]
+}
+```
+
+---
+
+## 🎯 Project Goal
+
+The goal of this project was to practice core programming concepts in C#:
+
+* variables and data structures
+* lists and dictionaries
+* functions
+* file reading with CSV
+* manual JSON generation
+* input validation
+* console interaction
+* project organization
+
+---
+
+## 👤 Author
+
+Created by:
+
+* **Abderrahim BOUHRAOUA**
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**.
+See the [LICENSE](LICENSE) file for more details.
+
+---
+
+## ⛴️ Project La Can
+
+<p align="center">
+  <strong>Book your crossing. Choose your route. Sail away.</strong>
+</p>
